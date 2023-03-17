@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="<%=obj.csspath%>" rel="stylesheet" type="text/css" />
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bungee+Spice&display=swap" rel="stylesheet">
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.1/jquery.min.js"></script>
+
+    <title>Document</title>
+</head>
+<body>
+
+    <div id="container">
+        <div id="sidediv">
+            <div id="imgdiv">
+                <img src="../assets/logo.svg" id="logoimg"/>
+            </div>
+            <div id="theme-avator">
+                <div></div>
+                <div id="themediv" class="setimg" onclick="changetheme(this)" style="background-image: url('../assets/icon-moon.svg');"></div>
+                <img src="../assets/image-avatar.jpg" id="avatar"/>
+            </div>
+        </div>
+        <div id="maindiv" class="whole">
+            <div id="opaciti" ></div>
+            <div id="header">
+                <div id="headerele">
+                    <div id="firstele">
+                        <p id="ptagclr" class="invoice">Invoices</p>
+                        <p  id="ptagclr" class="No-invoices"><span>There are <%=data.length%></span> total invoices</p>
+                    </div>
+                    <div id="secondele">
+                        <h2 id="ptagclr" class="filters">Filter</h2>
+                        <img src="../assets/icon-arrow-down.svg" onclick="filtering()" class="downicon"/>
+                        <div id="filterboxes">
+                            <input type="checkbox" id="paidele" class="checkele" value="Paid"/>
+                            <label>Paid</label><br>
+                            <input type="checkbox" id="pendingele" class="checkele" value="Pending"/>
+                            <label>Pending</label><br>
+                            <input type="checkbox" id="draftele" class="checkele" value="Draft"/>
+                            <label>Draft</label><br>
+                            <div id="setfilter">
+                                <p id="clear" onclick="clearfilter()">Clear</p>
+                                <p id="apply" onclick="applyfilter()">Apply</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div id="thirdele">
+                        <div id="new-invoices" >
+                            <div class="plus">
+                                <img src="../assets/icon-plus.svg" class="plus-icon"/>
+                            </div>
+                            <p class="add-ptag">New Invoice</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div id="content">
+        <% for(let i=data.length-1; i>= 0 ; i--){%>
+            <% let item=data[i]; 
+            let getdate = JSON.parse(item.useraddress).invoicedate;
+            const date = new Date(getdate);
+            
+            const convertdate = date.toLocaleDateString('en-GB', {
+              day: 'numeric',
+              month: 'short',
+              year: 'numeric'
+            }); 
+           let count=JSON.parse(item.listitems).qty;
+           if(!Array.isArray(count)){
+            count=count.split(" "); 
+        };
+            let amount=JSON.parse(item.listitems).price;
+            if(!Array.isArray(amount)){
+                amount=amount.split(" "); 
+            };
+            let status=item.status;
+            let totalamount=0;
+             for(let i=0; i< count.length; i++){
+                totalamount+=parseInt(count[i])*parseInt(amount[i]);
+            }%>
+            
+                <div class="createdetail" id="createboxes">
+                    <h3 id="ptagclr"><span  style="color:#7E88C3;">#</span><%=item.userid%></h3>
+                    <p id="ptagclr" class="dateclr">Due <%=convertdate%></p>
+                    <p  id="ptagclr" class="dateclr"><%=JSON.parse(item.billto).clientname%></p>
+                    <h2 id="ptagclr">$ <%=totalamount%></h2>
+                  <% if(status=='Save as Draft'){%>
+                    <div class="sale"><li>Draft</li></div>
+               <% } else if(status=='Save & Send'){%>
+                <div id="pending"><li>Pending</li></div>
+              <% }  else{%>
+                <div id="paid"><li>Paid</li></div>
+              <%}%>
+                         <form action="/useraddress" method="post">
+                        <button id="arrowbtn" id="ptagclr" type="submit" value="<%=item.id%>" name="getid" onclick="createdetail()"><img src="../assets/icon-arrow-right.svg"></button>
+                    </form>
+                </div>
+            <% }%>
+        </div>
+            <%-include('invoice')%>
+        </div>
+    </div>
+    <script src="<%=obj.jspath%>"></script>
+</body>
+</html>

@@ -1,0 +1,161 @@
+<link href="css/style.css" rel="stylesheet" type="text/css" />
+<body>
+<div id="createdetailpage">
+    <div id="sidediv">
+        <div id="imgdiv">
+            <img src="../assets/logo.svg" id="logoimg"/>
+        </div>
+        <div id="theme-avator">
+            <div></div>
+            <div id="themediv" class="setimg" style="background-image: url('../assets/icon-moon.svg');"></div>
+            <img src="../assets/image-avatar.jpg" id="avatar"/>
+        </div>
+    </div>
+    <div id="showdetailpage">
+        <div id="opaciti" ></div>
+    <div id="showdetail" class="showdetailsbk">
+        <div class="backdiv">
+            <form action="/repeatindex" method="post">
+           <button id="backbtn" type="submit"><img src="../assets/icon-arrow-right.svg" id="backimg"/></button>
+            </form>
+            <p class="back_btag" id="setsameclr">Go back</p>
+        </div>
+        <% let detail=getaddress[0];
+        let getdate = JSON.parse(detail.useraddress).invoicedate;
+            const date = new Date(getdate);
+            const convertdate = date.toLocaleDateString('en-GB', {
+              day: 'numeric',
+              month: 'short',
+              year: 'numeric'
+            });
+            
+            let payment=JSON.parse(detail.useraddress).payment;
+            let getday =parseInt(payment.match (/\d+/));
+            let createDate = new Date(getdate);
+            createDate.setDate(createDate.getDate() + getday);
+            let result = createDate.toISOString().substring(0, 10);
+            const payday = new Date(result);
+            const paymentdate = payday.toLocaleDateString('en-GB', {
+              day: 'numeric',
+              month: 'short',
+              year: 'numeric'
+            });
+            let getitems=JSON.parse(detail.listitems).itemname;
+            let getqty=JSON.parse(detail.listitems).qty;
+            let getprice=JSON.parse(detail.listitems).price;
+        
+            let status=detail.status;
+            let total=0;
+            if(Array.isArray(getitems)){
+              for(let i=0; i< getprice.length; i++){
+                total+=parseInt(getprice[i])*parseInt(getqty[i]);
+             }
+            }
+            else{
+              total+=parseInt(getprice)*parseInt(getqty);
+            }
+           
+        %>
+        <div id="statusdiv" class="samebackground">
+            <div></div>
+            <p class="dateclr" id="setsameclr">Status</p>
+            <% if(status=='Save as Draft'){%>
+                <div class="sale"><li>Draft</li></div>
+           <% } else if(status==='Save & Send'){%>
+            <div id="pending"><li>Pending</li></div>
+          <% }  else if(status==='paid'){%>
+            <div id="paid"><li>paid</li></div>
+          <%}%>
+            <div></div>
+            <button type="submit" id="edits">Edit</button>
+            <button type="submit" id="delete">Delete</button>
+            <form action="/markpaid" method="post">
+            <button type="submit" id="markpaid" name="markaspaid" value="<%=detail.id%>">Mark as Paid</button>
+           </form>
+        </div>
+        <div id="addressdetail" class="samebackground">
+           
+            <div class="firstrow">
+                <div></div>
+                <div class="description">
+                    <h3 class="finduser" id="setsameclr"><span class="setclr">#</span><%=detail.userid%></h3>
+                    <p class="setclr" id="setsameclr"><%=JSON.parse(detail.useraddress).project%></p>
+                </div>
+                <div></div>
+                <div class="description">
+                    <p class="setclr" id="setsameclr"><%=JSON.parse(detail.billform).address%></p>
+                    <p class="setclr" id="setsameclr"><%=JSON.parse(detail.billform).city%> </p>  
+                    <p class="setclr" id="setsameclr"><%=JSON.parse(detail.billform).postcode%></p> 
+                    <p class="setclr" id="setsameclr"><%=JSON.parse(detail.billform).country%></p>
+                </div>
+            </div>
+            <div class="secondrow">
+                <p></p>
+                <div class="description">
+                  <p class="setclr" id="setsameclr">Invoice Date</p> 
+                  <h3 id="setsameclr"><%=convertdate%></h3>
+                  <p></p>
+                  <p class="setclr" id="setsameclr">Payment Due</p>
+                  <h3 id="setsameclr"><%=paymentdate%></h3>
+                </div>
+                <div class="description">
+                 <p class="setclr" id="setsameclr">Bill To</p>
+                 <h3 id="setsameclr"><%=JSON.parse(detail.billto).clientname%></h3>
+                 <p class="setclr" id="setsameclr"><%=JSON.parse(detail.billto).street%></p>
+                 <p class="setclr" id="setsameclr"><%=JSON.parse(detail.useraddress).customercity%></p>
+                 <p class="setclr" id="setsameclr"><%=JSON.parse(detail.useraddress).customerpost%></p>
+                 <p class="setclr" id="setsameclr"><%=JSON.parse(detail.useraddress).customercountry%></p>
+                </div>
+                <div class="description">
+                 <p class="setclr" id="setsameclr">Sent to</p>
+                  <h3 id="setsameclr"><%=JSON.parse(detail.billto).clientemail%></h3>
+                </div>
+            </div>
+            <div class="thirddiv">
+                <div id="itemlist" >
+                    <div class="thirdfirst">
+                        <p></p>
+                        <p class="setclr" id="setsameclr">Item Name</p>
+                        <p class="setclr" id="setsameclr">QTY</p>
+                        <p class="setclr" id="setsameclr">Price</p>
+                        <p class="setclr" id="setsameclr">Total</p>
+                    </div>
+                    <div class="createitemlist">
+                        <% if(Array.isArray(getitems)){ %>
+                            <% for(let i=0; i< getitems.length; i++){ %>
+                              <div class="createlist">
+                                <p></p>
+                                <p class="bolding" id="setsameclr"><%=getitems[i]%></p>
+                                <p class="setclr" id="setsameclr"><%=getqty[i]%></p>
+                                <p class="setclr" id="setsameclr">£ <%=getprice[i]%></p>
+                                <p class="bolding" id="setsameclr">£ <%=(parseInt(getqty[i])*parseInt(getprice[i]))%></p>
+                              </div> 
+                            <% } %>
+                          <% } else { %>
+                            <div class="createlist">
+                              <p></p>
+                              <p class="bolding" id="setsameclr"><%=getitems%></p>
+                              <p class="setclr" id="setsameclr"><%=getqty%></p>
+                              <p class="setclr" id="setsameclr">£ <%=getprice%></p>
+                              <p class="bolding" id="setsameclr">£ <%=(parseInt(getqty)*parseInt(getprice))%></p>
+                            </div> 
+                          <% } %>
+                          
+                    </div>
+                    <div class="calctotal">
+                        <p></p>
+                        <p class="setclr" id="setsameclr">Amount Due</p>
+                        <p></p>
+                        <h3 class="rupees" id="setsameclr">£<%=total%></h3>
+                    </div>
+                </div>
+               
+            </div>
+        </div>
+    </div>
+    <%-include('edit',{detail,getitems,getqty,getprice,total,getdate,status})%>
+    <%-include('delete',{detail})%>
+   </div>
+</div>
+<script src="js/script.js"></script>
+</body>

@@ -1,0 +1,84 @@
+<link href="css/style.css" rel="stylesheet" type="text/css" />
+<div id="invoice-page">
+<div id="create-newinvoice" class="newinvoiceclr">
+    <div></div>
+    <div id="forms">
+        <p id="detailclr" class="new-invoice">New Invoice</p>
+        <p class="bill">Bill Form</p>
+        <form action="/addinvoice" method="post" id="fullform">
+          <p id="detailclr" class="address">Street Address</p>
+          <input name="addname" class="address-inp" type="text" value="19 Union Terrace"/>
+          <div id="address-tag">
+            <p class="ptag" id="detailclr">City</p>
+            <p class="ptag" id="detailclr">Post Code</p>
+            <p class="ptag" id="detailclr">Country</p>
+          </div>
+          <div id="address-inp">
+            <input name="addcity" class="inp-box" type="text" value="London"/>
+            <input name="addpost" class="inp-box" type="text" value="E1 3EZ"/>
+            <input name="addcountry" class="inp-box" type="text" value="United Kingdom"/>
+          </div>
+          <p class="billTo">Bill To</p>
+          <p class="ptag" id="detailclr">client's Name</p>
+          <input name="addclient" class="address-inp"  id="clientname"  type="text" required/>
+          <p class="ptag" id="detailclr">Client's Email</p>
+          <input name="addEmail" class="address-inp" type="text" id="clientemail" required/>
+          <p class="ptag" id="detailclr">Street Address</p>
+          <input name="addstreet" class="address-inp" type="text" id="streetaddres" required/>
+          <div id="address-tag">
+            <p class="ptag" id="detailclr">City</p>
+            <p class="ptag" id="detailclr">Post Code</p>
+            <p class="ptag" id="detailclr">Country</p>
+          </div>
+          <div id="address-inp">
+            <input name="addcity1" class="inp-box" type="text" id="street1" required/>
+            <input name="addpost2" class="inp-box" type="text" id="street2" required/>
+            <input name="addcountry3" class="inp-box" type="text" id="street3" required/>
+          </div>
+           <div id="paydate">
+            <p class="ptag" id="detailclr">Invoice Date</p>
+            <p class="ptag" id="detailclr">Payment Terms</p>
+           </div>
+           <div id="paydate-inp">
+            <input name="addpay" class="inp-box1" type="date" id="createday" required/>
+            <select name="adddate" class="inp-box1" id="selecttag" >
+              <option value="Net 7 Days">Net 1 Days</option>
+              <option value="Net 7 Days">Net 7 Days</option>
+              <option value="Net 14 Days">Net 14 Days</option>
+              <option value="Net 30 Days">Net 30 Days</option>
+            </select>
+           </div>
+           <p class="ptag" id="detailclr">Project Description</p>
+           <input name="addDescription" class="inp-box1" type="type" id="description" required/>
+           <p id="detailclr" class="item">Item List</p>
+           <div id="items">
+            <p class="ptag" id="detailclr">Item Name</p>
+            <p class="ptag" id="detailclr">Qty</p>
+            <p class="ptag" id="detailclr">Price</p>
+            <p class="ptag" id="detailclr">Total</p>
+           </div>
+           <div id="Additems">
+
+                <div id="Addbox">
+                    <input type="text" id="inp1" class="input1" name="itemname"  required/>
+                    <input type="number" id="inp2" class="input2" name="qtynum" required/>
+                    <input type="number" id="inp3"  class="input3" name="pricenum" required/>
+                    <div class="aligns">
+                        <p id="total" calss="totals"></p>
+                    </div>
+                    <div class="aligns" onclick="removediv(this)">
+                    <img src="../assets/icon-delete.svg" id="deletebtn" class="deleteimg"/>
+                   </div>
+                   </div>
+        
+           </div>
+           <div id="Add-itemdivs" class="changeadditem" onclick="createitems()">+ Add New Item</div>
+           <div id="submit-items">
+            <div id="discard" class="changeadditem">Discard</div>
+            <input type="submit"  id="Draft" name="sendstaus" value="Save as Draft"/>
+            <input type="submit"  id="Send"  name="sendstaus" value="Save & Send"/>
+           </div>
+        </form>
+    </div>
+</div>
+</div>

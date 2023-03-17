@@ -1,0 +1,18 @@
+<link href="css/style.css" rel="stylesheet" type="text/css" />
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.1/jquery.min.js"></script>
+<body>
+<div id="wholedeletepage">
+    <div id="deletecontainer">
+        <h1 id="h1tag">Confirm Deletion</h1>
+        <p class="setptag">Are you sure you want to delete invoice #<%=detail.userid%> This action cannot be undone.</p>
+        <div id="lastdlt">
+            <div></div>
+        <div id="cancelbtn">Cancel</div>
+        <form action="/deleterow" method="post">
+        <button type="submit" id="delete" class="dltbtn" name="deleteid" value="<%=detail.id%>">Delete</button>
+        </form>
+    </div>
+    </div>
+</div>
+<script src="js/script.js"></script>
+</body>

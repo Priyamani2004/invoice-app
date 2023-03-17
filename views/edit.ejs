@@ -1,0 +1,130 @@
+<link href="css/style.css" rel="stylesheet" type="text/css" />
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.1/jquery.min.js"></script>
+<div id="invoicenodes">
+<div id="create-newinvoice" class="nextcls newinvoiceclr">
+    <div></div>
+    <div id="forms">
+        <p class="new-invoice">New Invoice</p>
+        <p class="bill">Bill Form</p>
+        <form action="/editusers" method="post" id="fullform">
+          <p class="address">Street Address</p>
+          <input name="addname" class="address-inp" type="text" value="<%=JSON.parse(detail.billform).address%>"/>
+          <div id="address-tag">
+            <p class="ptag">City</p>
+            <p class="ptag">Post Code</p>
+            <p class="ptag">Country</p>
+          </div>
+          <div id="address-inp">
+            <input name="addcity" class="inp-box" type="text" value="<%=JSON.parse(detail.billform).city%>"/>
+            <input name="addpost" class="inp-box" type="text" value="<%=JSON.parse(detail.billform).postcode%>"/>
+            <input name="addcountry" class="inp-box" type="text" value="<%=JSON.parse(detail.billform).country%>"/>
+          </div>
+          <p class="billTo">Bill To</p>
+          <p class="ptag">client's Name</p>
+          <input name="addclient" class="address-inp"  id="clientname" value="<%=JSON.parse(detail.billto).clientname%>"  type="text" required/>
+          <p class="ptag">Client's Email</p>
+          <input name="addEmail" class="address-inp" type="text" id="clientemail" value="<%=JSON.parse(detail.billto).clientemail%>" required/>
+          <p class="ptag">Street Address</p>
+          <input name="addstreet" class="address-inp" type="text" id="streetaddres" value="<%=JSON.parse(detail.billto).street%>" required/>
+          <div id="address-tag">
+            <p class="ptag">City</p>
+            <p class="ptag">Post Code</p>
+            <p class="ptag">Country</p>
+          </div>
+          <div id="address-inp">
+            <input name="addcity1" class="inp-box" type="text" value="<%=JSON.parse(detail.useraddress).customercity%>" id="street1" required/>
+            <input name="addpost2" class="inp-box" type="text" value="<%=JSON.parse(detail.useraddress).customerpost%>" id="street2" required/>
+            <input name="addcountry3" class="inp-box" type="text" id="street3" value="<%=JSON.parse(detail.useraddress).customercountry%>" required/>
+          </div>
+          <%   
+               let payment=JSON.parse(detail.useraddress).payment;
+          %>
+           <div id="paydate">
+            <p class="ptag">Invoice Date</p>
+            <p class="ptag">Payment Terms</p>
+           </div>
+           <div id="paydate-inp">
+            <input name="addpay" class="inp-box1" type="date" id="createday" value="<%=getdate%>"  required/>
+            <% if(payment=="Net 1 Days"){%>
+            <select name="adddate" class="inp-box1" value="<%=payment%>" >
+              <option value="Net 1 Days" selected>Net 1 Days</option>
+              <option value="Net 7 Days">Net 7 Days</option>
+              <option value="Net 14 Days">Net 14 Days</option>
+              <option value="Net 30 Days">Net 30 Days</option>
+            </select>
+          <%}%>
+          <% if(payment=="Net 7 Days"){%>
+            <select name="adddate" class="inp-box1" value="<%=payment%>" >
+              <option value="Net 1 Days">Net 1 Days</option>
+              <option value="Net 7 Days" selected>Net 7 Days</option>
+              <option value="Net 14 Days">Net 14 Days</option>
+              <option value="Net 30 Days">Net 30 Days</option>
+            </select>
+          <%}%>
+
+          <% if(payment=="Net 14 Days"){%>
+            <select name="adddate" class="inp-box1" value="<%=payment%>" >
+              <option value="Net 1 Days">Net 1 Days</option>
+              <option value="Net 7 Days">Net 7 Days</option>
+              <option value="Net 14 Days" selected>Net 14 Days</option>
+              <option value="Net 30 Days">Net 30 Days</option>
+            </select>
+          <%}%>
+
+          <% if(payment=="Net 30 Days"){%>
+            <select name="adddate" class="inp-box1" value="<%=payment%>" >
+              <option value="Net 1 Days">Net 1 Days</option>
+              <option value="Net 7 Days">Net 7 Days</option>
+              <option value="Net 14 Days">Net 14 Days</option>
+              <option value="Net 30 Days" selected>Net 30 Days</option>
+            </select>
+          <%}%>
+           </div>
+           <p class="ptag">Project Description</p>
+           <input name="addDescription" class="inp-box1" type="type" value="<%=JSON.parse(detail.useraddress).project%>" id="description" required/>
+           <p id="item">Item List</p>
+           <div id="items">
+            <p class="ptag">Item Name</p>
+            <p class="ptag">Qty</p>
+            <p class="ptag">Price</p>
+            <p class="ptag">Total</p>
+           </div>
+           <div id="Additems">
+            <% if(Array.isArray(getitems)){ %>
+             <% for(let i=0; i< getitems.length; i++){%>
+                <div id="Addbox">
+                    <input type="text" id="inp1" class="input1" name="itemname" value="<%=getitems[i]%>"  required/>
+                    <input type="number" id="inp2" class="input2" value="<%=getqty[i]%>" name="qtynum" required/>
+                    <input type="number" id="inp3"  class="input3" name="pricenum" value="<%=getprice[i]%>" required/>
+                    <div class="aligns">
+                        <p id="total" calss="totals"> <%=(parseInt(getqty[i])*parseInt(getprice[i]))%></p>
+                    </div>
+                    <div class="aligns" onclick="removediv(this)">
+                    <img src="../assets/icon-delete.svg" id="deletebtn" class="deleteimg"/>
+                   </div>
+                   </div>
+                 <% }%>
+                 <% } else { %>
+                  <div id="Addbox">
+                    <input type="text" id="inp1" class="input1" name="itemname" value="<%=getitems%>"  required/>
+                    <input type="number" id="inp2" class="input2" value="<%=getqty%>" name="qtynum" required/>
+                    <input type="number" id="inp3"  class="input3" name="pricenum" value="<%=getprice%>" required/>
+                    <div class="aligns">
+                        <p id="total" calss="totals"> <%=(parseInt(getqty)*parseInt(getprice))%></p>
+                    </div>
+                    <div class="aligns" onclick="removediv(this)">
+                    <img src="../assets/icon-delete.svg" id="deletebtn" class="deleteimg"/>
+                   </div>
+                   </div>
+                   <% } %>
+           </div>
+           <div id="Add-itemdivs" class="changeadditem changeclr" onclick="createitems()">+ Add New Item</div>
+           <div id="submit-items">
+            <input type="text" id="getstatus" class="setstatus" name="sendstaus" value="<%=detail.status%>"/>
+           <div id="cancel" class="changeclr">Cancel</div>
+            <button type="submit" value="<%=detail.id%>"  id="Send"  name="SaveChanges">Save Changes</button>
+           </div>
+        </form>
+    </div>
+</div>
+</div>
